@@ -10,12 +10,22 @@
     "frontendDist": "../dist"
   },
   "app": {
+    "macOSPrivateApi": true,
     "windows": [
       {
         "title": "tauri-app",
         "width": 800,
         "height": 600,
-        "titleBarStyle": "Overlay"
+        "transparent": true,
+        "decorations": false,
+        "shadow": true,
+        "windowEffects": {
+          "effects": [
+            "windowBackground"
+          ],
+          "radius": 8.0,
+          "state": "active"
+        }
       }
     ],
     "security": {
