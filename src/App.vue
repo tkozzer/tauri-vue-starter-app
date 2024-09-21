@@ -1,110 +1,73 @@
 <script setup>
-import { ref, watchEffect, onMounted, onUnmounted } from "vue";
-import Greet from "./components/Greet.vue";
-import { getCurrentWindow } from '@tauri-apps/api/window';
+import { watchEffect, onMounted, onUnmounted } from "vue"
+import { useAppStore } from "./stores/appStore"
+import Greet from "./components/Greet.vue"
 
-const isDarkMode = ref(false);
-const appWindow = getCurrentWindow();
-const isFullscreen = ref(false);
-const isSystemTheme = ref(true);
-const isToggleVisible = ref(false);
-
-// Function to get the system theme
-async function getSystemTheme() {
-  const theme = await appWindow.theme();
-  return theme === 'dark';
-}
-
-// Function to update the app theme
-async function updateAppTheme() {
-  if (isSystemTheme.value) {
-    isDarkMode.value = await getSystemTheme();
-  }
-  if (isDarkMode.value) {
-    document.documentElement.classList.add('dark');
-    await appWindow.setTitle("Tauri App (Dark Mode)");
-  } else {
-    document.documentElement.classList.remove('dark');
-    await appWindow.setTitle("Tauri App (Light Mode)");
-  }
-}
+const store = useAppStore()
 
 watchEffect(async () => {
-  await updateAppTheme();
-});
+  await store.updateAppTheme()
+})
 
-function toggleDarkMode() {
-  isSystemTheme.value = false;
-  isDarkMode.value = !isDarkMode.value;
-}
-
-const preventDefault = (e) => e.preventDefault();
+const preventDefault = (e) => e.preventDefault()
 
 // Add this function to enable window dragging
 function startDragging(event) {
-  if (event.target.tagName === 'BUTTON') return; // Prevent dragging when clicking buttons
-  appWindow.startDragging();
+  if (event.target.tagName === 'BUTTON') return // Prevent dragging when clicking buttons
+  store.appWindow.startDragging()
 }
 
 // Add these functions to handle window controls
 async function closeApp() {
-  await appWindow.close();
+  await store.appWindow.close()
 }
 
 async function minimizeApp() {
-  await appWindow.minimize();
+  await store.appWindow.minimize()
 }
 
 // Update this function to toggle fullscreen and update isFullscreen state
 async function toggleFullscreen() {
-  isFullscreen.value = !isFullscreen.value;
-  await appWindow.setFullscreen(isFullscreen.value);
+  store.isFullscreen = !store.isFullscreen
+  await store.appWindow.setFullscreen(store.isFullscreen)
 }
 
 // Function to check fullscreen state
 async function updateFullscreenState() {
-  isFullscreen.value = await appWindow.isFullscreen();
+  store.isFullscreen = await store.appWindow.isFullscreen()
 }
 
 onMounted(async () => {
-  window.addEventListener('wheel', preventDefault, { passive: false });
-  window.addEventListener('touchmove', preventDefault, { passive: false });
-  await updateFullscreenState();
+  window.addEventListener('wheel', preventDefault, { passive: false })
+  window.addEventListener('touchmove', preventDefault, { passive: false })
+  await updateFullscreenState()
   // Listen for fullscreen changes
-  await appWindow.onResized(updateFullscreenState);
+  await store.appWindow.onResized(updateFullscreenState)
 
   // Set initial theme
-  await updateAppTheme();
+  await store.updateAppTheme()
 
   // Listen for system theme changes
-  await appWindow.onThemeChanged(async ({ payload: theme }) => {
-    if (isSystemTheme.value) {
-      isDarkMode.value = theme === 'dark';
-      await updateAppTheme();
+  await store.appWindow.onThemeChanged(async ({ payload: theme }) => {
+    if (store.isSystemTheme) {
+      store.isDarkMode = theme === 'dark'
+      await store.updateAppTheme()
     }
-  });
-});
+  })
+})
 
 onUnmounted(async () => {
-  window.removeEventListener('wheel', preventDefault);
-  window.removeEventListener('touchmove', preventDefault);
+  window.removeEventListener('wheel', preventDefault)
+  window.removeEventListener('touchmove', preventDefault)
   // Remove the fullscreen listener
-  await appWindow.onResized.removeAll();
-});
-
-function showToggle() {
-  isToggleVisible.value = true;
-}
-
-function hideToggle() {
-  isToggleVisible.value = false;
-}
+  await store.appWindow.onResized.removeAll()
+})
 </script>
 
 <template>
   <div class="app-container" @mousedown="startDragging">
     <!-- Update the window control buttons to only show when not fullscreen -->
-    <div v-if="!isFullscreen" class="window-controls">
+    <div v-if="!store.isFullscreen" class="window-controls">
       <button @click="closeApp" class="control-button close"></button>
       <button @click="minimizeApp" class="control-button minimize"></button>
       <button @click="toggleFullscreen" class="control-button fullscreen"></button>
@@ -112,15 +75,15 @@ function hideToggle() {
 
     <div 
       class="toggle-container"
-      @mouseenter="showToggle"
-      @mouseleave="hideToggle"
+      @mouseenter="store.showToggle"
+      @mouseleave="store.hideToggle"
     >
       <button
-        @click="toggleDarkMode"
+        @click="store.toggleDarkMode"
         class="theme-toggle"
-        :class="{ 'visible': isToggleVisible }"
+        :class="{ 'visible': store.isToggleVisible }"
       >
-        {{ isDarkMode ? '🌞' : '🌙' }}
+        {{ store.isDarkMode ? '🌞' : '🌙' }}
       </button>
     </div>
 
