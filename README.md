@@ -2,6 +2,16 @@
 
 This template provides a solid foundation for developing desktop applications using Tauri v2 and Vue 3. It incorporates the Vue 3 Composition API and Pinia for state management, offering a modern and efficient development experience.
 
+## Application Preview
+
+<p align="center">
+  <img src="/images/app_only.png" alt="Main Application Window" width="45%" style="margin-right: 10%;">
+  <img src="/images/app_debug.png" alt="Application with Debug Window" width="45%">
+</p>
+<p align="center">
+  <em>Left: Main Application Window &nbsp;&nbsp;&nbsp;&nbsp; Right: Application with Debug Window</em>
+</p>
+
 ## Features
 
 - Tauri v2 for creating lightweight, secure desktop applications
@@ -56,6 +66,20 @@ In the project directory, you can run:
     - Adjust the HTML and CSS in `src/App.vue`
     - Update window properties in `src-tauri/tauri.conf.json` if needed
     - Ensure proper permissions are set in `src-tauri/capabilities/default.json`
+
+## Technologies
+
+This project is built with:
+
+<p align="center">
+  <img src="public/vite.svg" alt="Vite logo" width="100" height="100">
+  <img src="public/tauri.svg" alt="Tauri logo" width="100" height="100">
+  <img src="src/assets/vue.svg" alt="Vue logo" width="100" height="100">
+</p>
+
+- [Vite](https://vitejs.dev/): Next Generation Frontend Tooling
+- [Tauri](https://tauri.app/): Build smaller, faster, and more secure desktop applications with a web frontend
+- [Vue.js](https://vuejs.org/): The Progressive JavaScript Framework
 
 ## Learn More
 
