@@ -21,20 +21,20 @@ This template provides a solid foundation for developing desktop applications us
 1. Clone this repository
 2. Install dependencies:
    ```
-   npm install
+   pnpm install
    ```
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-- `npm run dev`: Starts the Vite development server
-- `npm run build`: Builds the Vue app for production
-- `npm run preview`: Locally preview the production build
-- `npm run dev:tauri`: Starts the Tauri development environment
-- `npm run build:tauri`: Builds the Tauri application for production
-- `npm run preview:tauri`: Previews the Tauri application
-- `npm run debug`: Starts the Tauri development environment with debug mode enabled
+- `pnpm run dev`: Starts the Vite development server
+- `pnpm run build`: Builds the Vue app for production
+- `pnpm run preview`: Locally preview the production build
+- `pnpm run dev:tauri`: Starts the Tauri development environment
+- `pnpm run build:tauri`: Builds the Tauri application for production
+- `pnpm run preview:tauri`: Previews the Tauri application
+- `pnpm run debug`: Starts the Tauri development environment with debug mode enabled
 
 ## Project Structure
 
