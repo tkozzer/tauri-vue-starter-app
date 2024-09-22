@@ -42,8 +42,8 @@ export const useAppStore = defineStore('app', () => {
     }
 
     const emitWindowData = async () => {
-        const position = await appWindow.outerPosition()
-        const size = await appWindow.outerSize()
+        const position = await appWindow.innerPosition()
+        const size = await appWindow.innerSize()
         await emit('main-window-info', { position, size })
     }
 
