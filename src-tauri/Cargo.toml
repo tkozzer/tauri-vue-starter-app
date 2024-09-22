@@ -9,6 +9,7 @@ edition = "2021"
 
 [lib]
 name = "tauri_app_lib"
+path = "src/lib/mod.rs"
 crate-type = ["lib", "cdylib", "staticlib"]
 
 [build-dependencies]
