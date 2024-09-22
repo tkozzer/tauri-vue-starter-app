@@ -1,5 +1,6 @@
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 use tauri::menu::{AboutMetadata, Menu, PredefinedMenuItem, Submenu};
+use tauri::WebviewWindowBuilder;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -46,6 +47,12 @@ pub fn run() {
 
             // Set the menu for the application
             app.set_menu(menu).expect("Failed to set app menu");
+
+            // Create the debug window
+            WebviewWindowBuilder::new(app, "debug", tauri::WebviewUrl::App("debug.html".into()))
+                .title("Debug Window")
+                .build()
+                .expect("Failed to create debug window");
 
             Ok(())
         })

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Window</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #debug-info {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Debug Window</h1>
+    <div id="debug-info">
+        <p>This is the debug window. You can add debug information here.</p>
+        <p>Debug Window Name: <span id="window-name"></span></p>
+        <h2>Main Window Info:</h2>
+        <p>Position: <span id="main-window-position"></span></p>
+        <p>Size: <span id="main-window-size"></span></p>
+    </div>
+
+    <script type="module">
+        import { Window } from '@tauri-apps/api/window';
+        import { emit, listen } from '@tauri-apps/api/event';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const debugWindow = Window.getCurrent();
+            const windowName = debugWindow.label;
+
+            document.getElementById('window-name').textContent = windowName;
+
+            // Listen for main window info updates
+            await listen('main-window-info', (event) => {
+                const { position, size } = event.payload;
+                document.getElementById('main-window-position').textContent =
+                    `X: ${position.x}, Y: ${position.y}`;
+                document.getElementById('main-window-size').textContent =
+                    `Width: ${size.width}, Height: ${size.height}`;
+            });
+
+            // Request main window info
+            await emit('request-main-window-info');
+        });
+    </script>
+</body>
+
+</html>

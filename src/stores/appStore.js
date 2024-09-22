@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { getCurrentWindow } from '@tauri-apps/api/window'
+import { emit } from '@tauri-apps/api/event'
 
 export const useAppStore = defineStore('app', () => {
     const isDarkMode = ref(false)
@@ -40,6 +41,12 @@ export const useAppStore = defineStore('app', () => {
         isToggleVisible.value = false
     }
 
+    const emitWindowData = async () => {
+        const position = await appWindow.outerPosition()
+        const size = await appWindow.outerSize()
+        await emit('main-window-info', { position, size })
+    }
+
     return {
         isDarkMode,
         isFullscreen,
@@ -51,5 +58,6 @@ export const useAppStore = defineStore('app', () => {
         toggleDarkMode,
         showToggle,
         hideToggle,
+        emitWindowData,
     }
 })

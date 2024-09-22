@@ -2,6 +2,7 @@
 import { watchEffect, onMounted, onUnmounted } from "vue"
 import { useAppStore } from "./stores/appStore"
 import Greet from "./components/Greet.vue"
+import { listen } from "@tauri-apps/api/event"
 
 const store = useAppStore()
 
@@ -41,8 +42,15 @@ onMounted(async () => {
   window.addEventListener('wheel', preventDefault, { passive: false })
   window.addEventListener('touchmove', preventDefault, { passive: false })
   await updateFullscreenState()
-  // Listen for fullscreen changes
-  await store.appWindow.onResized(updateFullscreenState)
+  
+  // Listen for fullscreen changes and emit window data
+  await store.appWindow.onResized(async () => {
+    await updateFullscreenState()
+    await store.emitWindowData()
+  })
+
+  // Listen for window moves and emit window data
+  await store.appWindow.onMoved(store.emitWindowData)
 
   // Set initial theme
   await store.updateAppTheme()
@@ -54,13 +62,20 @@ onMounted(async () => {
       await store.updateAppTheme()
     }
   })
+
+  // Emit initial window data
+  await store.emitWindowData()
+
+  // Listen for requests from debug window
+  await listen('request-main-window-info', store.emitWindowData)
 })
 
 onUnmounted(async () => {
   window.removeEventListener('wheel', preventDefault)
   window.removeEventListener('touchmove', preventDefault)
-  // Remove the fullscreen listener
+  // Remove all window event listeners
   await store.appWindow.onResized.removeAll()
+  await store.appWindow.onMoved.removeAll()
 })
 </script>
 
