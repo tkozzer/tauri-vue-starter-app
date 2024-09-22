@@ -47,6 +47,15 @@ In the project directory, you can run:
 
 - Modify `src-tauri/tauri.conf.json` to customize your application's metadata and build settings
 - Update the menu configuration in the appropriate Tauri configuration file
+- Custom titlebar:
+  - The app uses a custom titlebar implemented in `src/App.vue`
+  - Window controls (close, minimize, fullscreen) are included in the custom titlebar
+  - The window is set to be transparent and without decorations in `src-tauri/tauri.conf.json`
+  - Necessary permissions for window management are set in `src-tauri/capabilities/default.json`
+  - To modify the titlebar:
+    - Adjust the HTML and CSS in `src/App.vue`
+    - Update window properties in `src-tauri/tauri.conf.json` if needed
+    - Ensure proper permissions are set in `src-tauri/capabilities/default.json`
 
 ## Learn More
 
