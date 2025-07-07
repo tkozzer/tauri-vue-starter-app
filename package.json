@@ -16,7 +16,10 @@
     "type-check:all": "pnpm type-check:ts && pnpm type-check:rust",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:check": "eslint . --max-warnings 0"
+    "lint:check": "eslint . --max-warnings 0",
+    "lint:clippy": "cd src-tauri && cargo clippy",
+    "lint:fmt": "cd src-tauri && cargo fmt --check",
+    "lint:fmt-fix": "cd src-tauri && cargo fmt"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.6.0",
