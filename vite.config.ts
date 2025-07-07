@@ -13,7 +13,7 @@ export default defineConfig(async () => ({
     rollupOptions: {
       input: {
         main: fileURLToPath(new URL("./html/index.html", import.meta.url)),
-        settings: fileURLToPath(new URL("./html/settings.html", import.meta.url)),
+        debug: fileURLToPath(new URL("./html/debug.html", import.meta.url)),
       },
     },
     outDir: fileURLToPath(new URL("../dist", import.meta.url)),
