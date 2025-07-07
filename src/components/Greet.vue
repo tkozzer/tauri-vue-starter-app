@@ -2,6 +2,9 @@
 import { invoke } from "@tauri-apps/api/core";
 import { ref } from "vue";
 
+import { Button as UiButton } from "@/components/ui/button";
+import { Input as UiInput } from "@/components/ui/input";
+
 const greetMsg = ref<string>("");
 const name = ref<string>("");
 
@@ -13,18 +16,15 @@ async function greet(): Promise<void> {
 
 <template>
   <form class="flex items-center justify-center mb-4" @submit.prevent="greet">
-    <input
+    <UiInput
       id="greet-input"
       v-model="name"
       placeholder="Enter a name..."
-      class="mr-2 px-4 py-2 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700"
-    >
-    <button
-      type="submit"
-      class="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-    >
+      class="mr-2"
+    />
+    <UiButton type="submit">
       Greet
-    </button>
+    </UiButton>
   </form>
 
   <p class="text-lg">

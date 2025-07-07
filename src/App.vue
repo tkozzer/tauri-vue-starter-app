@@ -4,6 +4,8 @@ import type { Theme } from "@tauri-apps/api/window";
 import { listen } from "@tauri-apps/api/event";
 import { onMounted, onUnmounted, watchEffect } from "vue";
 
+import { Button as UiButton } from "@/components/ui/button";
+
 import Greet from "./components/Greet.vue";
 import { useAppStore } from "./stores/appStore";
 
@@ -96,13 +98,13 @@ onUnmounted(() => {
       @mouseenter="store.showToggle"
       @mouseleave="store.hideToggle"
     >
-      <button
+      <UiButton
         class="theme-toggle"
         :class="{ visible: store.isToggleVisible }"
         @click="store.toggleDarkMode"
       >
         {{ store.isDarkMode ? '🌞' : '🌙' }}
-      </button>
+      </UiButton>
     </div>
 
     <h1 class="text-4xl font-bold mb-8">

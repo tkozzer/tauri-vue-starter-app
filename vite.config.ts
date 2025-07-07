@@ -1,6 +1,6 @@
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
-import { fileURLToPath } from "url";
+import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 
 const host = process.env.TAURI_DEV_HOST;
@@ -8,7 +8,11 @@ const host = process.env.TAURI_DEV_HOST;
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [vue(), tailwindcss()],
-
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
   build: {
     rollupOptions: {
       input: {
