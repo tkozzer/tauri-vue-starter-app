@@ -1,8 +1,8 @@
 {
   "name": "tauri-app",
-  "private": true,
-  "version": "1.0.0",
   "type": "module",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
@@ -13,7 +13,10 @@
     "debug": "export TAURI_DEBUG=1 && tauri dev",
     "type-check:ts": "vue-tsc --noEmit",
     "type-check:rust": "cd src-tauri && cargo check",
-    "type-check:all": "pnpm type-check:ts && pnpm type-check:rust"
+    "type-check:all": "pnpm type-check:ts && pnpm type-check:rust",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:check": "eslint . --max-warnings 0"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.6.0",
@@ -22,6 +25,7 @@
     "vue": "^3.5.17"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^4.16.2",
     "@tailwindcss/vite": "4.1.11",
     "@tauri-apps/cli": "^2.6.2",
     "@types/node": "^24.0.10",

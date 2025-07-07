@@ -2,7 +2,7 @@
 name = "tauri-app"
 version = "1.0.0"
 description = "A Tauri App"
-authors = ["you"]
+authors = [ "you" ]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,7 +10,11 @@ edition = "2021"
 [lib]
 name = "tauri_app_lib"
 path = "src/lib/mod.rs"
-crate-type = ["lib", "cdylib", "staticlib"]
+crate-type = [
+  "lib",
+  "cdylib",
+  "staticlib"
+]
 
 [build-dependencies]
 tauri-build = { version = "2.3.0", features = [] }
@@ -20,4 +24,3 @@ tauri = { version = "2.6.2", features = [ "macos-private-api" ] }
 tauri-plugin-shell = "2.3.0"
 serde = { version = "1", features = [ "derive" ] }
 serde_json = "1"
-
