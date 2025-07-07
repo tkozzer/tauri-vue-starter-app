@@ -1,29 +1,49 @@
 {
   "name": "tauri-app",
-  "private": true,
-  "version": "0.1.0",
   "type": "module",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "dev:tauri": "tauri dev",
     "build:tauri": "tauri build",
     "preview:tauri": "tauri preview",
-    "debug": "export TAURI_DEBUG=1 && tauri dev"
+    "debug": "export TAURI_DEBUG=1 && tauri dev",
+    "type-check:ts": "vue-tsc --noEmit",
+    "type-check:rust": "cd src-tauri && cargo check",
+    "type-check:all": "pnpm type-check:ts && pnpm type-check:rust",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:check": "eslint . --max-warnings 0",
+    "lint:clippy": "cd src-tauri && cargo clippy",
+    "lint:fmt": "cd src-tauri && cargo fmt --check",
+    "lint:fmt-fix": "cd src-tauri && cargo fmt"
   },
   "dependencies": {
-    "@tauri-apps/api": ">=2.0.0-rc.0",
-    "@tauri-apps/plugin-shell": ">=2.0.0-rc.0",
-    "pinia": "^2.2.2",
-    "vue": "^3.3.4"
+    "@tauri-apps/api": "^2.6.0",
+    "@tauri-apps/plugin-shell": "^2.3.0",
+    "@vueuse/core": "^13.5.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^0.525.0",
+    "pinia": "^3.0.3",
+    "reka-ui": "^2.3.2",
+    "tailwind-merge": "^3.3.1",
+    "tw-animate-css": "^1.3.5",
+    "vue": "^3.5.17"
   },
   "devDependencies": {
-    "@tauri-apps/cli": ">=2.0.0-rc.0",
-    "@vitejs/plugin-vue": "^5.0.5",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5",
-    "vite": "^5.3.1"
+    "@antfu/eslint-config": "^4.16.2",
+    "@tailwindcss/vite": "4.1.11",
+    "@tauri-apps/cli": "^2.6.2",
+    "@types/node": "^24.0.10",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "shadcn-vue": "^2.2.0",
+    "tailwindcss": "4.1.11",
+    "typescript": "^5.8.3",
+    "vite": "^6.0.3",
+    "vue-tsc": "^3.0.1"
   }
 }

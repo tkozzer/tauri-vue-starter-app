@@ -28,11 +28,14 @@ pub fn create_debug_window(app: &tauri::App) -> tauri::Result<()> {
             .min(monitor_position.x + monitor_size.width as i32 - debug_window_width as i32);
         let debug_y = main_position.y;
 
-        let debug_window =
-            WebviewWindowBuilder::new(app, "debug", tauri::WebviewUrl::App("debug.html".into()))
-                .title("Debug Window")
-                .inner_size(debug_window_width, 600.0)
-                .build()?;
+        let debug_window = WebviewWindowBuilder::new(
+            app,
+            "debug",
+            tauri::WebviewUrl::App("html/debug.html".into()),
+        )
+        .title("Debug Window")
+        .inner_size(debug_window_width, 600.0)
+        .build()?;
 
         // Set the position of the debug window after it's created
         debug_window.set_position(tauri::Position::Physical(tauri::PhysicalPosition {

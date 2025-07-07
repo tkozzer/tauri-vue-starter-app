@@ -25,7 +25,8 @@
           ],
           "radius": 8.0,
           "state": "active"
-        }
+        },
+        "url": "html/index.html"
       }
     ],
     "security": {

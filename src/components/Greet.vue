@@ -1,31 +1,33 @@
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
 import { invoke } from "@tauri-apps/api/core";
+import { ref } from "vue";
 
-const greetMsg = ref("");
-const name = ref("");
+import { Button as UiButton } from "@/components/ui/button";
+import { Input as UiInput } from "@/components/ui/input";
 
-async function greet() {
+const greetMsg = ref<string>("");
+const name = ref<string>("");
+
+async function greet(): Promise<void> {
   // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-  greetMsg.value = await invoke("greet", { name: name.value });
+  greetMsg.value = await invoke<string>("greet", { name: name.value });
 }
 </script>
 
 <template>
   <form class="flex items-center justify-center mb-4" @submit.prevent="greet">
-    <input
+    <UiInput
       id="greet-input"
       v-model="name"
       placeholder="Enter a name..."
-      class="mr-2 px-4 py-2 rounded bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-700"
+      class="mr-2"
     />
-    <button
-      type="submit"
-      class="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 transition-colors"
-    >
+    <UiButton type="submit">
       Greet
-    </button>
+    </UiButton>
   </form>
 
-  <p class="text-lg">{{ greetMsg }}</p>
+  <p class="text-lg">
+    {{ greetMsg }}
+  </p>
 </template>

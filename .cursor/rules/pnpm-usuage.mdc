@@ -1,0 +1,8 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# pnpm usuage 
+
+- Always use `pnpm` for all package management, dependency installation, and script running tasks.
