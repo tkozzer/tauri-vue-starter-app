@@ -123,6 +123,8 @@ onUnmounted(async () => {
 </template>
 
 <style>
+@reference "./index.css";
+
 .app-container {
   @apply min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
   height: 100vh;

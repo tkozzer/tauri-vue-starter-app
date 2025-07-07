@@ -1,0 +1,293 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Tailwind CSS with Vite Rules
+
+## Installation and Setup
+
+### Follow Vite Plugin Installation
+Based on the official [Tailwind CSS Vite documentation](mdc:https:/tailwindcss.com/docs/installation/using-vite):
+
+1. **Install Dependencies**
+```bash
+pnpm add tailwindcss @tailwindcss/vite
+```
+
+2. **Configure Vite Plugin**
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [
+    tailwindcss(),
+  ],
+})
+```
+
+3. **Import Tailwind in CSS**
+```css
+/* src/style.css or main CSS file */
+@import "tailwindcss";
+```
+
+4. **No need for tailwind.config.js** - The new Vite plugin handles configuration automatically
+
+## Color Palette Guidelines
+
+### Use Neutral Color Scheme
+- **Primary neutral colors**: Use `bg-neutral-*` for gray backgrounds
+- **Contrast colors**: Use `black`, `white`, and neutral shades
+- **Avoid other color palettes** unless specifically needed for accents
+
+### Recommended Color Usage
+```vue
+<template>
+  <!-- Backgrounds -->
+  <div class="bg-white">Light background</div>
+  <div class="bg-neutral-50">Very light gray</div>
+  <div class="bg-neutral-100">Light gray background</div>
+  <div class="bg-neutral-200">Medium light gray</div>
+  <div class="bg-neutral-800">Dark gray background</div>
+  <div class="bg-neutral-900">Very dark gray</div>
+  <div class="bg-black">Black background</div>
+
+  <!-- Text Colors -->
+  <p class="text-black">Primary text</p>
+  <p class="text-neutral-800">Dark gray text</p>
+  <p class="text-neutral-600">Medium gray text</p>
+  <p class="text-neutral-400">Light gray text</p>
+  <p class="text-white">White text</p>
+
+  <!-- Borders -->
+  <div class="border border-neutral-200">Light border</div>
+  <div class="border border-neutral-300">Medium border</div>
+  <div class="border border-neutral-800">Dark border</div>
+</template>
+```
+
+### Neutral Shade Reference
+```
+neutral-50    → Very light gray (almost white)
+neutral-100   → Light gray
+neutral-200   → Light medium gray
+neutral-300   → Medium gray
+neutral-400   → Medium dark gray  
+neutral-500   → Balanced gray
+neutral-600   → Dark medium gray
+neutral-700   → Dark gray
+neutral-800   → Very dark gray
+neutral-900   → Almost black
+```
+
+## Vue Component Integration
+
+### Using Tailwind with Vue Composition API
+```vue
+<template>
+  <div class="min-h-screen bg-neutral-50">
+    <header class="bg-white border-b border-neutral-200 px-6 py-4">
+      <h1 class="text-2xl font-bold text-black">App Title</h1>
+    </header>
+    
+    <main class="max-w-7xl mx-auto px-6 py-8">
+      <div class="bg-white rounded-lg shadow-sm border border-neutral-200 p-6">
+        <p class="text-neutral-800">Content goes here</p>
+      </div>
+    </main>
+  </div>
+</template>
+
+<script lang="ts" setup>
+// Component logic
+</script>
+```
+
+### Conditional Classes with Composition API
+```vue
+<template>
+  <button 
+    :class="[
+      'px-4 py-2 rounded-md font-medium transition-colors',
+      isActive 
+        ? 'bg-black text-white' 
+        : 'bg-neutral-100 text-neutral-800 hover:bg-neutral-200'
+    ]"
+    @click="toggleActive"
+  >
+    {{ buttonText }}
+  </button>
+</template>
+
+<script lang="ts" setup>
+import { ref, computed } from 'vue'
+
+const isActive = ref(false)
+
+const buttonText = computed(() => 
+  isActive.value ? 'Active' : 'Inactive'
+)
+
+const toggleActive = () => {
+  isActive.value = !isActive.value
+}
+</script>
+```
+
+### Responsive Design Patterns
+```vue
+<template>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div 
+      v-for="item in items" 
+      :key="item.id"
+      class="bg-white border border-neutral-200 rounded-lg p-6 hover:shadow-md transition-shadow"
+    >
+      <h3 class="text-lg font-semibold text-black mb-2">{{ item.title }}</h3>
+      <p class="text-neutral-600">{{ item.description }}</p>
+    </div>
+  </div>
+</template>
+```
+
+## Best Practices
+
+### Utility-First Approach
+- **Favor utility classes** over custom CSS
+- **Compose utilities** to create complex designs
+- **Use component abstraction** when patterns repeat frequently
+
+### Performance Optimization
+```vue
+<!-- Good: Specific utility classes -->
+<div class="flex items-center justify-between bg-white border-b border-neutral-200 px-6 py-4">
+
+<!-- Avoid: Overly generic or repeated custom classes -->
+<div class="header-container">
+```
+
+### Dark Mode Preparation
+```vue
+<template>
+  <!-- Use neutral colors that work well with potential dark mode -->
+  <div class="bg-white text-black border border-neutral-200">
+    <!-- When dark mode is added later, this becomes: -->
+    <!-- bg-white dark:bg-neutral-900 text-black dark:text-white border-neutral-200 dark:border-neutral-700 -->
+  </div>
+</template>
+```
+
+### Component Styling Patterns
+```vue
+<template>
+  <!-- Card pattern -->
+  <div class="bg-white rounded-lg shadow-sm border border-neutral-200 overflow-hidden">
+    <div class="px-6 py-4 border-b border-neutral-100">
+      <h3 class="text-lg font-semibold text-black">Card Title</h3>
+    </div>
+    <div class="p-6">
+      <p class="text-neutral-600">Card content</p>
+    </div>
+  </div>
+
+  <!-- Form input pattern -->
+  <div class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-neutral-800 mb-2">
+        Label
+      </label>
+      <input 
+        type="text"
+        class="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black focus:border-black"
+        placeholder="Enter text..."
+      />
+    </div>
+  </div>
+
+  <!-- Button patterns -->
+  <div class="flex gap-3">
+    <!-- Primary button -->
+    <button class="px-4 py-2 bg-black text-white rounded-md hover:bg-neutral-800 transition-colors">
+      Primary
+    </button>
+    
+    <!-- Secondary button -->
+    <button class="px-4 py-2 bg-white text-black border border-neutral-300 rounded-md hover:bg-neutral-50 transition-colors">
+      Secondary
+    </button>
+    
+    <!-- Ghost button -->
+    <button class="px-4 py-2 text-neutral-600 hover:text-black hover:bg-neutral-100 rounded-md transition-colors">
+      Ghost
+    </button>
+  </div>
+</template>
+```
+
+## Common Layout Patterns
+
+### App Shell Layout
+```vue
+<template>
+  <div class="min-h-screen bg-neutral-50">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-neutral-200 sticky top-0 z-10">
+      <!-- Navigation content -->
+    </nav>
+    
+    <!-- Main content area -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <router-view />
+    </div>
+  </div>
+</template>
+```
+
+### Grid Layout Systems
+```vue
+<template>
+  <!-- Dashboard grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <div class="lg:col-span-3">
+      <!-- Main content -->
+    </div>
+    <div class="lg:col-span-1">
+      <!-- Sidebar -->
+    </div>
+  </div>
+</template>
+```
+
+## Error Prevention
+
+### Avoid These Anti-Patterns
+```vue
+<!-- ❌ Don't use arbitrary values when utilities exist -->
+<div class="w-[342px]"> <!-- Use w-80 or similar instead -->
+
+<!-- ❌ Don't mix color schemes -->
+<div class="bg-blue-500 text-red-600"> <!-- Stick to neutral palette -->
+
+<!-- ❌ Don't overuse !important -->
+<div class="!bg-green-500"> <!-- Use proper specificity instead -->
+
+<!-- ✅ Good patterns -->
+<div class="w-80 bg-neutral-100 text-neutral-800">
+```
+
+### Consistent Spacing Scale
+```vue
+<template>
+  <!-- Use consistent spacing scale -->
+  <div class="space-y-6"> <!-- or space-y-4, space-y-8 -->
+    <div class="p-6"> <!-- or p-4, p-8 -->
+      <div class="mb-4"> <!-- consistent with space-y scale -->
+        <!-- Content -->
+      </div>
+    </div>
+  </div>
+</template>
+```

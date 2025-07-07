@@ -1,0 +1,108 @@
+---
+description: Guidelines for developing Tauri applications with Vite and Vue
+globs: 
+alwaysApply: true
+---
+# Tauri Development Guidelines
+
+## Project Structure
+- `src/` - Vue frontend source code
+- `src-tauri/` - Rust backend source code
+- `src-tauri/tauri.conf.json` - Main Tauri configuration
+- `vite.config.ts` - Vite configuration for frontend
+- `package.json` - Frontend dependencies and scripts
+
+## Frontend Configuration (Vite + Vue)
+
+### Vite Configuration
+- Always configure Vite with Tauri-specific settings in `vite.config.ts`:
+  - Set `clearScreen: false` to prevent obscuring Rust errors
+  - Use `strictPort: true` for consistent port (typically 1420)
+  - Configure `host` with `process.env.TAURI_DEV_HOST` for mobile development
+  - Add `envPrefix: ['VITE_', 'TAURI_ENV_*']` for environment variables
+  - Set appropriate build targets for different platforms
+  - Ignore `src-tauri` directory in watch mode
+
+### Tauri Configuration
+- Configure `src-tauri/tauri.conf.json` with:
+  - `beforeDevCommand: "pnpm dev"` - starts Vite dev server
+  - `beforeBuildCommand: "pnpm build"` - builds Vue app
+  - `devUrl: "http://localhost:5173"` - Vite dev server URL
+  - `frontendDist: "../dist"` - built frontend location
+
+## Development Workflow
+
+### Starting Development
+- Use `pnpm tauri dev` to start both frontend and backend development servers
+- This automatically runs `pnpm dev` for the frontend and compiles Rust code
+- Hot reload works for both Vue components and Rust code
+
+### Building for Production
+- Use `pnpm tauri build` to create production builds
+- This runs `pnpm build` for frontend and compiles Rust in release mode
+
+### Adding Dependencies
+- Frontend: `pnpm add <package>` in root directory
+- Backend: `cargo add <crate>` in `src-tauri/` directory
+- Tauri plugins: `pnpm tauri add <plugin>`
+
+## File Organization
+
+### Frontend (Vue)
+- Components in `src/components/`
+- Views/pages in `src/views/` or `src/pages/`
+- Composables in `src/composables/`
+- Stores (Pinia) in `src/stores/`
+- Types in `src/types/`
+
+### Backend (Rust)
+- Main entry point: `src-tauri/src/main.rs`
+- Tauri commands in `src-tauri/src/lib.rs` or separate modules
+- Custom types and utilities in separate modules
+
+## Tauri-Specific Patterns
+
+### Frontend-Backend Communication
+- Use `@tauri-apps/api` for invoking Rust commands from Vue
+- Define commands in Rust with `#[tauri::command]`
+- Import and use in Vue: `import { invoke } from '@tauri-apps/api'`
+
+### State Management
+- Use Pinia for Vue state management
+- Persist state using Tauri's storage APIs when needed
+- Handle app lifecycle events for state persistence
+
+### Platform-Specific Code
+- Use `@tauri-apps/plugin-os` for platform detection
+- Implement platform-specific UI patterns in Vue
+- Handle platform-specific Rust code with conditional compilation
+
+## Best Practices
+
+### Performance
+- Use SSG (Static Site Generation) mode for Vue
+- Minimize bundle size with tree-shaking
+- Use Tauri's built-in optimization features
+
+### Security
+- Configure CSP (Content Security Policy) in `tauri.conf.json`
+- Use Tauri's permission system for API access
+- Validate all data passed between frontend and backend
+
+### Development
+- Use TypeScript for both frontend and backend type safety
+- Implement error handling for all Tauri command invocations
+- Use Tauri's logging system for debugging
+- Test both frontend and backend components separately
+
+### File Operations
+- Use Tauri's filesystem APIs instead of browser APIs
+- Handle file paths correctly across platforms
+- Implement proper error handling for file operations
+
+## Common Commands
+- `pnpm tauri dev` - Start development mode
+- `pnpm tauri build` - Build for production
+- `pnpm tauri info` - Display environment information
+- `pnpm tauri add <plugin>` - Add Tauri plugin
+- `pnpm tauri migrate` - Migrate from v1 to v2

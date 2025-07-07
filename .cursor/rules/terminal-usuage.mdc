@@ -1,0 +1,7 @@
+---
+alwaysApply: true
+---
+
+- Never use `^L` or `q` in the terminal tool.
+- Never run `pnpm tauri dev` or `pnpm tauri:dev` or `pnpm dev` in the terminal tool, unless explicitly asked to do so.
+- If you need to run `cargo check`, please run `pnpm type-check:rust` in the terminal tool.

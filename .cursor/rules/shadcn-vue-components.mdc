@@ -1,0 +1,498 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Shadcn Vue Component Rules
+
+## Installation and Setup
+
+### Initial Installation
+```bash
+# Install shadcn-vue CLI
+pnpm add -D shadcn-vue
+
+# Initialize shadcn-vue in your project
+pnpm dlx shadcn-vue@latest init
+```
+
+### Project Configuration
+The init command will create:
+- `components.json` - Configuration file
+- `lib/utils.ts` - Utility functions (cn helper)
+- `components/ui/` - Directory for UI components
+
+## Component Registration Pattern
+
+### Global Registration (Recommended for frequently used components)
+```ts
+// src/main.ts
+import { createApp } from 'vue'
+import App from './App.vue'
+
+// Import commonly used shadcn components
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
+const app = createApp(App)
+
+// Register components globally
+app.component('UiButton', Button)
+app.component('UiInput', Input)
+app.component('UiCard', Card)
+app.component('UiCardContent', CardContent)
+app.component('UiCardHeader', CardHeader)
+app.component('UiCardTitle', CardTitle)
+
+app.mount('#app')
+```
+
+### Local Registration (Recommended for component-specific usage)
+```vue
+<template>
+  <div class="p-6">
+    <UiCard class="w-full max-w-md">
+      <UiCardHeader>
+        <UiCardTitle>Login Form</UiCardTitle>
+      </UiCardHeader>
+      <UiCardContent>
+        <form @submit.prevent="handleSubmit" class="space-y-4">
+          <UiInput 
+            v-model="email"
+            type="email"
+            placeholder="Enter your email"
+          />
+          <UiInput 
+            v-model="password"
+            type="password"
+            placeholder="Enter your password"
+          />
+          <UiButton type="submit" class="w-full">
+            Sign In
+          </UiButton>
+        </form>
+      </UiCardContent>
+    </UiCard>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { Button as UiButton } from '@/components/ui/button'
+import { Input as UiInput } from '@/components/ui/input'
+import { 
+  Card as UiCard, 
+  CardContent as UiCardContent, 
+  CardHeader as UiCardHeader, 
+  CardTitle as UiCardTitle 
+} from '@/components/ui/card'
+
+const email = ref('')
+const password = ref('')
+
+const handleSubmit = () => {
+  console.log('Form submitted', { email: email.value, password: password.value })
+}
+</script>
+```
+
+## Component Installation Pattern
+
+### Adding Individual Components
+```bash
+# Add specific components as needed
+pnpm dlx shadcn-vue@latest add button
+pnpm dlx shadcn-vue@latest add input
+pnpm dlx shadcn-vue@latest add card
+pnpm dlx shadcn-vue@latest add dialog
+pnpm dlx shadcn-vue@latest add dropdown-menu
+pnpm dlx shadcn-vue@latest add table
+pnpm dlx shadcn-vue@latest add form
+```
+
+### Commonly Used Components for Data Applications
+```bash
+# Essential UI components
+pnpm dlx shadcn-vue@latest add button
+pnpm dlx shadcn-vue@latest add input
+pnpm dlx shadcn-vue@latest add card
+pnpm dlx shadcn-vue@latest add table
+pnpm dlx shadcn-vue@latest add dialog
+pnpm dlx shadcn-vue@latest add sheet
+pnpm dlx shadcn-vue@latest add dropdown-menu
+pnpm dlx shadcn-vue@latest add select
+pnpm dlx shadcn-vue@latest add form
+pnpm dlx shadcn-vue@latest add toast
+pnpm dlx shadcn-vue@latest add badge
+pnpm dlx shadcn-vue@latest add skeleton
+pnpm dlx shadcn-vue@latest add pagination
+```
+
+## Type-Safe Component Usage
+
+### Button Component Patterns
+```vue
+<template>
+  <div class="flex gap-3">
+    <!-- Primary button -->
+    <UiButton variant="default" size="default">
+      Default Button
+    </UiButton>
+
+    <!-- Secondary button -->
+    <UiButton variant="secondary" size="sm">
+      Secondary
+    </UiButton>
+
+    <!-- Destructive button -->
+    <UiButton variant="destructive" size="lg">
+      Delete
+    </UiButton>
+
+    <!-- Ghost button -->
+    <UiButton variant="ghost">
+      Ghost Button
+    </UiButton>
+
+    <!-- Loading state -->
+    <UiButton :disabled="isLoading">
+      <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
+      {{ isLoading ? 'Processing...' : 'Submit' }}
+    </UiButton>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { Button as UiButton } from '@/components/ui/button'
+import { Loader2 } from 'lucide-vue-next'
+
+const isLoading = ref(false)
+</script>
+```
+
+### Form Components with Validation
+```vue
+<template>
+  <form @submit.prevent="onSubmit" class="space-y-6">
+    <div class="space-y-2">
+      <label for="name" class="text-sm font-medium">Name</label>
+      <UiInput
+        id="name"
+        v-model="formData.name"
+        :class="{ 'border-red-500': errors.name }"
+        placeholder="Enter your name"
+      />
+      <p v-if="errors.name" class="text-sm text-red-500">{{ errors.name }}</p>
+    </div>
+
+    <div class="space-y-2">
+      <label for="email" class="text-sm font-medium">Email</label>
+      <UiInput
+        id="email"
+        v-model="formData.email"
+        type="email"
+        :class="{ 'border-red-500': errors.email }"
+        placeholder="Enter your email"
+      />
+      <p v-if="errors.email" class="text-sm text-red-500">{{ errors.email }}</p>
+    </div>
+
+    <UiButton type="submit" class="w-full">
+      Submit Form
+    </UiButton>
+  </form>
+</template>
+
+<script lang="ts" setup>
+import { reactive, ref } from 'vue'
+import { Button as UiButton } from '@/components/ui/button'
+import { Input as UiInput } from '@/components/ui/input'
+
+interface FormData {
+  name: string
+  email: string
+}
+
+interface FormErrors {
+  name?: string
+  email?: string
+}
+
+const formData = reactive<FormData>({
+  name: '',
+  email: ''
+})
+
+const errors = ref<FormErrors>({})
+
+const validateForm = (): boolean => {
+  errors.value = {}
+  
+  if (!formData.name.trim()) {
+    errors.value.name = 'Name is required'
+  }
+  
+  if (!formData.email.trim()) {
+    errors.value.email = 'Email is required'
+  } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    errors.value.email = 'Email is invalid'
+  }
+  
+  return Object.keys(errors.value).length === 0
+}
+
+const onSubmit = () => {
+  if (validateForm()) {
+    console.log('Form submitted:', formData)
+  }
+}
+</script>
+```
+
+### Data Table Pattern
+```vue
+<template>
+  <div class="space-y-4">
+    <UiCard>
+      <UiCardHeader>
+        <UiCardTitle>Data Table</UiCardTitle>
+      </UiCardHeader>
+      <UiCardContent>
+        <UiTable>
+          <UiTableHeader>
+            <UiTableRow>
+              <UiTableHead>Name</UiTableHead>
+              <UiTableHead>Email</UiTableHead>
+              <UiTableHead>Status</UiTableHead>
+              <UiTableHead class="text-right">Actions</UiTableHead>
+            </UiTableRow>
+          </UiTableHeader>
+          <UiTableBody>
+            <UiTableRow v-for="user in users" :key="user.id">
+              <UiTableCell class="font-medium">{{ user.name }}</UiTableCell>
+              <UiTableCell>{{ user.email }}</UiTableCell>
+              <UiTableCell>
+                <UiBadge :variant="user.active ? 'default' : 'secondary'">
+                  {{ user.active ? 'Active' : 'Inactive' }}
+                </UiBadge>
+              </UiTableCell>
+              <UiTableCell class="text-right">
+                <UiDropdownMenu>
+                  <UiDropdownMenuTrigger as-child>
+                    <UiButton variant="ghost" size="sm">
+                      <MoreHorizontal class="h-4 w-4" />
+                    </UiButton>
+                  </UiDropdownMenuTrigger>
+                  <UiDropdownMenuContent align="end">
+                    <UiDropdownMenuItem @click="editUser(user)">
+                      Edit
+                    </UiDropdownMenuItem>
+                    <UiDropdownMenuItem @click="deleteUser(user.id)">
+                      Delete
+                    </UiDropdownMenuItem>
+                  </UiDropdownMenuContent>
+                </UiDropdownMenu>
+              </UiTableCell>
+            </UiTableRow>
+          </UiTableBody>
+        </UiTable>
+      </UiCardContent>
+    </UiCard>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { 
+  Table as UiTable,
+  TableBody as UiTableBody,
+  TableCell as UiTableCell,
+  TableHead as UiTableHead,
+  TableHeader as UiTableHeader,
+  TableRow as UiTableRow,
+} from '@/components/ui/table'
+import { Card as UiCard, CardContent as UiCardContent, CardHeader as UiCardHeader, CardTitle as UiCardTitle } from '@/components/ui/card'
+import { Badge as UiBadge } from '@/components/ui/badge'
+import { Button as UiButton } from '@/components/ui/button'
+import {
+  DropdownMenu as UiDropdownMenu,
+  DropdownMenuContent as UiDropdownMenuContent,
+  DropdownMenuItem as UiDropdownMenuItem,
+  DropdownMenuTrigger as UiDropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { MoreHorizontal } from 'lucide-vue-next'
+
+interface User {
+  id: string
+  name: string
+  email: string
+  active: boolean
+}
+
+const users = ref<User[]>([
+  { id: '1', name: 'John Doe', email: 'john@example.com', active: true },
+  { id: '2', name: 'Jane Smith', email: 'jane@example.com', active: false },
+])
+
+const editUser = (user: User) => {
+  console.log('Edit user:', user)
+}
+
+const deleteUser = (userId: string) => {
+  console.log('Delete user:', userId)
+}
+</script>
+```
+
+## Component Naming Conventions
+
+### Import Aliasing Pattern
+```vue
+<script lang="ts" setup>
+// Use 'Ui' prefix for shadcn components to avoid naming conflicts
+import { Button as UiButton } from '@/components/ui/button'
+import { Card as UiCard } from '@/components/ui/card'
+import { Dialog as UiDialog } from '@/components/ui/dialog'
+
+// Custom components use regular names
+import UserProfile from '@/components/UserProfile.vue'
+import DataChart from '@/components/DataChart.vue'
+</script>
+```
+
+### Template Usage
+```vue
+<template>
+  <!-- Shadcn components with Ui prefix -->
+  <UiCard>
+    <UiButton>Click me</UiButton>
+  </UiCard>
+
+  <!-- Custom components without prefix -->
+  <UserProfile :user="currentUser" />
+  <DataChart :data="chartData" />
+</template>
+```
+
+## Customization Guidelines
+
+### Theme Customization
+```ts
+// lib/utils.ts - Extend the cn utility if needed
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+// Custom variant helper
+export function buttonVariants(variant: 'primary' | 'danger') {
+  return cn({
+    'bg-black text-white hover:bg-neutral-800': variant === 'primary',
+    'bg-red-600 text-white hover:bg-red-700': variant === 'danger',
+  })
+}
+```
+
+### Component Extension
+```vue
+<!-- Create custom components that extend shadcn components -->
+<template>
+  <UiButton 
+    :class="cn(
+      'transition-all duration-200',
+      variant === 'primary' && 'bg-black hover:bg-neutral-800',
+      variant === 'danger' && 'bg-red-600 hover:bg-red-700',
+      className
+    )"
+    v-bind="$attrs"
+  >
+    <slot />
+  </UiButton>
+</template>
+
+<script lang="ts" setup>
+import { Button as UiButton } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
+interface Props {
+  variant?: 'primary' | 'danger'
+  className?: string
+}
+
+defineProps<Props>()
+</script>
+```
+
+## Best Practices
+
+### Component Organization
+```
+src/
+  components/
+    ui/           # Shadcn components (auto-generated)
+      button/
+      card/
+      input/
+    common/       # Custom reusable components
+      AppHeader.vue
+      AppSidebar.vue
+    features/     # Feature-specific components
+      UserList.vue
+      DataTable.vue
+```
+
+### Performance Considerations
+- **Import only needed components** to reduce bundle size
+- **Use local registration** for components used in few places
+- **Use global registration** for components used throughout the app
+- **Lazy load** large component sets when possible
+
+### Type Safety
+```vue
+<script lang="ts" setup>
+// Always type your props and emits
+interface Props {
+  users: User[]
+  loading?: boolean
+}
+
+interface Emits {
+  'user-selected': [user: User]
+  'refresh': []
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  loading: false
+})
+
+const emit = defineEmits<Emits>()
+</script>
+```
+
+### Accessibility
+- **Always include proper labels** for form inputs
+- **Use semantic HTML** within shadcn components
+- **Test keyboard navigation** for interactive components
+- **Ensure proper contrast** with the neutral color scheme
+
+### Error Handling
+```vue
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { useToast } from '@/components/ui/toast'
+
+const { toast } = useToast()
+
+const handleError = (error: Error) => {
+  toast({
+    title: 'Error',
+    description: error.message,
+    variant: 'destructive',
+  })
+}
+</script>
+```
