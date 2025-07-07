@@ -29,7 +29,7 @@ pub fn create_debug_window(app: &tauri::App) -> tauri::Result<()> {
         let debug_y = main_position.y;
 
         let debug_window =
-            WebviewWindowBuilder::new(app, "debug", tauri::WebviewUrl::App("debug.html".into()))
+            WebviewWindowBuilder::new(app, "debug", tauri::WebviewUrl::App("html/debug.html".into()))
                 .title("Debug Window")
                 .inner_size(debug_window_width, 600.0)
                 .build()?;

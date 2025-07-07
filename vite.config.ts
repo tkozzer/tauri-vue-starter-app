@@ -1,5 +1,6 @@
 import tailwindcss from "@tailwindcss/vite";
 import vue from "@vitejs/plugin-vue";
+import { fileURLToPath } from "url";
 import { defineConfig } from "vite";
 
 const host = process.env.TAURI_DEV_HOST;
@@ -7,6 +8,17 @@ const host = process.env.TAURI_DEV_HOST;
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [vue(), tailwindcss()],
+
+  build: {
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL("./html/index.html", import.meta.url)),
+        settings: fileURLToPath(new URL("./html/settings.html", import.meta.url)),
+      },
+    },
+    outDir: fileURLToPath(new URL("../dist", import.meta.url)),
+    emptyOutDir: true,
+  },
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
