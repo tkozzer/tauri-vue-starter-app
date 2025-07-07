@@ -203,11 +203,11 @@ This project is built with cutting-edge technologies:
 
 ## 📚 Learn More
 
-- [Tauri v2 Documentation](https://v2.tauri.app)
-- [Vue 3 Documentation](https://vuejs.org/)
-- [Pinia Documentation](https://pinia.vuejs.org/)
-- [Tailwind CSS v4 Documentation](https://tailwindcss.com/)
-- [Vite Documentation](https://vitejs.dev/)
+- [Tauri v2 Documentation](https://v2.tauri.app/start/)
+- [Vue 3 Documentation](https://vuejs.org/guide/introduction.html)
+- [Pinia Documentation](https://pinia.vuejs.org/core-concepts/)
+- [Tailwind CSS v4 Documentation](https://tailwindcss.com/docs/installation/using-vite)
+- [Vite Documentation](https://vite.dev/guide/)
 
 ## 📄 License
 
