@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "dev:tauri": "tauri dev",
     "build:tauri": "tauri build",
     "preview:tauri": "tauri preview",
-    "debug": "export TAURI_DEBUG=1 && tauri dev"
+    "debug": "export TAURI_DEBUG=1 && tauri dev",
+    "type-check:ts": "vue-tsc --noEmit",
+    "type-check:rust": "cd src-tauri && cargo check",
+    "type-check:all": "pnpm type-check:ts && pnpm type-check:rust"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.6.0",
@@ -21,8 +24,11 @@
   "devDependencies": {
     "@tailwindcss/vite": "4.1.11",
     "@tauri-apps/cli": "^2.6.2",
+    "@types/node": "^24.0.10",
     "@vitejs/plugin-vue": "^5.2.1",
     "tailwindcss": "4.1.11",
-    "vite": "^6.0.3"
+    "typescript": "^5.8.3",
+    "vite": "^6.0.3",
+    "vue-tsc": "^3.0.1"
   }
 }

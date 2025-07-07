@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { watchEffect, onMounted, onUnmounted } from "vue"
 import { useAppStore } from "./stores/appStore"
 import Greet from "./components/Greet.vue"
 import { listen } from "@tauri-apps/api/event"
+import type { Theme } from "@tauri-apps/api/window"
 
 const store = useAppStore()
 
@@ -10,31 +11,32 @@ watchEffect(async () => {
   await store.updateAppTheme()
 })
 
-const preventDefault = (e) => e.preventDefault()
+const preventDefault = (e: Event): void => e.preventDefault()
 
 // Add this function to enable window dragging
-function startDragging(event) {
-  if (event.target.tagName === 'BUTTON') return // Prevent dragging when clicking buttons
+function startDragging(event: MouseEvent): void {
+  const target = event.target as HTMLElement
+  if (target.tagName === 'BUTTON') return // Prevent dragging when clicking buttons
   store.appWindow.startDragging()
 }
 
 // Add these functions to handle window controls
-async function closeApp() {
+async function closeApp(): Promise<void> {
   await store.appWindow.close()
 }
 
-async function minimizeApp() {
+async function minimizeApp(): Promise<void> {
   await store.appWindow.minimize()
 }
 
 // Update this function to toggle fullscreen and update isFullscreen state
-async function toggleFullscreen() {
+async function toggleFullscreen(): Promise<void> {
   store.isFullscreen = !store.isFullscreen
   await store.appWindow.setFullscreen(store.isFullscreen)
 }
 
 // Function to check fullscreen state
-async function updateFullscreenState() {
+async function updateFullscreenState(): Promise<void> {
   store.isFullscreen = await store.appWindow.isFullscreen()
 }
 
@@ -56,9 +58,9 @@ onMounted(async () => {
   await store.updateAppTheme()
 
   // Listen for system theme changes
-  await store.appWindow.onThemeChanged(async ({ payload: theme }) => {
+  await store.appWindow.onThemeChanged(async (event: { payload: Theme }) => {
     if (store.isSystemTheme) {
-      store.isDarkMode = theme === 'dark'
+      store.isDarkMode = event.payload === 'dark'
       await store.updateAppTheme()
     }
   })
@@ -70,12 +72,10 @@ onMounted(async () => {
   await listen('request-main-window-info', store.emitWindowData)
 })
 
-onUnmounted(async () => {
+onUnmounted(() => {
   window.removeEventListener('wheel', preventDefault)
   window.removeEventListener('touchmove', preventDefault)
-  // Remove all window event listeners
-  await store.appWindow.onResized.removeAll()
-  await store.appWindow.onMoved.removeAll()
+  // Note: Event listeners will be automatically cleaned up when the component unmounts
 })
 </script>
 
