@@ -1,7 +1,7 @@
 {
   "name": "tauri-app",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,16 +13,16 @@
     "debug": "export TAURI_DEBUG=1 && tauri dev"
   },
   "dependencies": {
-    "@tauri-apps/api": ">=2.0.0-rc.0",
-    "@tauri-apps/plugin-shell": ">=2.0.0-rc.0",
-    "pinia": "^2.2.2",
-    "vue": "^3.3.4"
+    "@tauri-apps/api": "^2.6.0",
+    "@tauri-apps/plugin-shell": "^2.3.0",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.17"
   },
   "devDependencies": {
     "@tailwindcss/vite": "4.1.11",
-    "@tauri-apps/cli": ">=2.0.0-rc.0",
-    "@vitejs/plugin-vue": "^5.0.5",
+    "@tauri-apps/cli": "^2.6.2",
+    "@vitejs/plugin-vue": "^5.2.1",
     "tailwindcss": "4.1.11",
-    "vite": "^5.3.1"
+    "vite": "^6.0.3"
   }
 }
