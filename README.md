@@ -328,7 +328,7 @@ The build process:
 - [Pinia Documentation](https://pinia.vuejs.org/core-concepts/)
 
 ### Tutorials
-- [Tauri + Vue Tutorial](https://v2.tauri.app/start/frontend/vue/)
+- [Tauri + Vite Tutorial](https://v2.tauri.app/start/frontend/vite/)
 - [Vue 3 Composition API](https://vuejs.org/guide/extras/composition-api-faq.html)
 - [Tailwind CSS Best Practices](https://tailwindcss.com/docs/reusing-styles)
 
